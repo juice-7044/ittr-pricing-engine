@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { calculatePricing } from '@/lib/calculator'
-import type { PricingRequest } from '@/lib/types'
+import type { PricingRequest } from '@/lib/calculator'
 
 export const runtime = 'nodejs'
 
@@ -8,21 +8,11 @@ export const runtime = 'nodejs'
  * POST /api/pricing/calculate
  *
  * Takes a traveler's selections and returns an itemized price quote.
- *
- * Body:
- *   { items: [{ type, productId, quantity, customRateMinor? }],
- *     checkIn?: "2026-12-01",
- *     promoCode?: "WELCOME10" }
- *
- * Response:
- *   { ok, currency, breakdown[], subtotalMinor, taxesFeesMinor,
- *     totalMinor, depositRequiredMinor, error? }
- *
  * All prices in minor units (cents).
  */
 export async function POST(request: NextRequest) {
   try {
-    const body: PricingRequest = await request.json()
+    const body: PricingRequest & { items?: Array<Record<string, unknown>> } = await request.json()
 
     // ── Validation ──
     if (!body.items || !Array.isArray(body.items) || body.items.length === 0) {
@@ -32,22 +22,34 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    for (const item of body.items) {
+    // Normalize items: GHL may send numbers as strings
+    const normalizedItems = body.items.map((item) => ({
+      type: String(item.type || ''),
+      productId: String(item.productId || ''),
+      quantity: typeof item.quantity === 'number' ? item.quantity : Number(item.quantity) || 0,
+      customRateMinor: item.customRateMinor ? Number(item.customRateMinor) : undefined,
+    }))
+
+    for (const item of normalizedItems) {
       if (!item.type || !item.productId) {
         return NextResponse.json(
           { ok: false, error: 'Each item must have type and productId' },
           { status: 400 }
         )
       }
-      if (typeof item.quantity !== 'number' || item.quantity < 1) {
+      if (item.quantity < 1) {
         return NextResponse.json(
-          { ok: false, error: `Invalid quantity for ${item.productId}` },
+          { ok: false, error: `Invalid quantity for ${item.productId}: ${item.quantity}` },
           { status: 400 }
         )
       }
     }
 
-    const result = calculatePricing(body)
+    const result = calculatePricing({
+      items: normalizedItems,
+      checkIn: body.checkIn,
+      promoCode: body.promoCode,
+    })
 
     if (!result.ok) {
       return NextResponse.json(result, { status: 400 })
