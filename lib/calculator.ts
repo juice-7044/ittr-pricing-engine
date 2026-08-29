@@ -79,6 +79,7 @@ export function calculatePricing(req: PricingRequest): PricingResponse {
 
     const rate = item.customRateMinor ?? getEffectiveRate(product, checkInDate)
     const lineTotal = rate * item.quantity
+    subtotalMinor += lineTotal
 
     let discountAmount = 0
     let discountLabel = ''
