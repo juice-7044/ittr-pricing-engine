@@ -49,7 +49,11 @@ function getSeasonalRate(productId: string, checkIn: Date) {
 function getEffectiveRate(product: Product, checkIn: Date | null): number {
   if (!checkIn) return product.rateMinor
   const rule = getSeasonalRate(product.id, checkIn)
-  return rule ? Math.round(product.rateMinor * rule.multiplier) : product.rateMinor
+  if (rule) {
+    if (rule.overrideRateMinor) return rule.overrideRateMinor
+    return Math.round(product.rateMinor * rule.multiplier)
+  }
+  return product.rateMinor
 }
 
 export function calculatePricing(req: PricingRequest): PricingResponse {

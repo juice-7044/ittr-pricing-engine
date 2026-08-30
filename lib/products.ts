@@ -16,7 +16,7 @@ export interface Product {
 
 export interface SeasonalRule {
   productId: string; monthStart: number; monthEnd: number; dayStart: number; dayEnd: number;
-  multiplier: number; label: string; priority: number;
+  multiplier: number; label: string; priority: number; overrideRateMinor?: number;
 }
 
 export interface RentalDiscount { minDays: number; maxDays: number; discountPercent: number; label: string; }
@@ -52,8 +52,8 @@ const seasonalRules: SeasonalRule[] = [
   { productId: 'middleton-manor', monthStart: 10, monthEnd: 11, dayStart: 1, dayEnd: 30, multiplier: 1.10, label: 'Peak Season +10%', priority: 1 },
   { productId: 'middleton-manor', monthStart: 12, monthEnd: 12, dayStart: 15, dayEnd: 31, multiplier: 1.10, label: 'Peak Season +10%', priority: 1 },
   { productId: 'middleton-manor', monthStart: 1, monthEnd: 1, dayStart: 1, dayEnd: 5, multiplier: 1.10, label: 'Peak Season +10%', priority: 1 },
-  { productId: 'middleton-manor', monthStart: 6, monthEnd: 8, dayStart: 1, dayEnd: 31, multiplier: 0.90, label: 'Off-Peak -10%', priority: 0 },
-  { productId: 'middleton-manor', monthStart: 9, monthEnd: 9, dayStart: 1, dayEnd: 14, multiplier: 0.90, label: 'Off-Peak -10%', priority: 0 },
+  { productId: 'middleton-manor', monthStart: 6, monthEnd: 8, dayStart: 1, dayEnd: 31, multiplier: 1.0, overrideRateMinor: 19500, label: 'Off-Peak $195/night', priority: 0 },
+  { productId: 'middleton-manor', monthStart: 9, monthEnd: 9, dayStart: 1, dayEnd: 14, multiplier: 1.0, overrideRateMinor: 19500, label: 'Off-Peak $195/night', priority: 0 },
   { productId: 'middleton-manor', monthStart: 12, monthEnd: 12, dayStart: 23, dayEnd: 31, multiplier: 1.25, label: 'Holiday Surcharge +25%', priority: 2 },
   { productId: 'middleton-manor', monthStart: 1, monthEnd: 1, dayStart: 1, dayEnd: 5, multiplier: 1.25, label: 'Holiday Surcharge +25%', priority: 2 },
   { productId: 'middleton-manor', monthStart: 7, monthEnd: 7, dayStart: 3, dayEnd: 5, multiplier: 1.25, label: 'Holiday Surcharge +25%', priority: 2 },
@@ -63,8 +63,8 @@ const seasonalRules: SeasonalRule[] = [
 ]
 
 const rentalDiscounts: RentalDiscount[] = [
-  { minDays: 7, maxDays: 29, discountPercent: 5, label: 'Weekly Rental -5%' },
-  { minDays: 30, maxDays: 365, discountPercent: 10, label: 'Monthly Rental -10%' },
+  { minDays: 7, maxDays: 29, discountPercent: 12, label: 'Weekly Rental -12%' },
+  { minDays: 30, maxDays: 365, discountPercent: 18, label: 'Monthly Rental -18%' },
 ]
 
 const bundleDiscount: BundleDiscount = { categories: ['accommodation', 'car'], discountPercent: 15, label: 'Bundle Discount -15% (accommodation + vehicle)' }
