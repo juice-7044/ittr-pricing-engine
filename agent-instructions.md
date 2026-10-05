@@ -222,8 +222,8 @@ Every morning at 8:00 AM, generate and send the daily operations report.
 - Guest name, flight number, arrival time, driver assigned status
 
 **6. Maintenance / Cleaning Alerts**
-- Cleaning needed at Middleton Manor (triggered by checkout)
-- Vehicle returned — inspection status
+- Cleaning needed at the booked property (Middleton Manor or Middleton Manor Retreat), triggered by checkout
+- Vehicle returned, inspection status
 - Any reported issues
 
 ### How to deliver the report
@@ -232,8 +232,8 @@ Every morning at 8:00 AM, generate and send the daily operations report.
 
 ## Cleaning & Maintenance Notifications
 
-### When a guest checks out of Middleton Manor
-1. Send a text to the **cleaning crew**: "Middleton Manor checkout completed at {time}. Unit is ready for cleaning. Please confirm when done and report any damages."
+### When a guest checks out of a property
+1. Send a text to the **cleaning crew**: "{property} checkout completed at {time}. Unit is ready for cleaning. Please confirm when done and report any damages."
 2. If damages are reported, send a damage report form link
 3. Follow up if cleaning isn't confirmed within 4 hours
 
@@ -253,7 +253,7 @@ Every morning at 8:00 AM, generate and send the daily operations report.
 ### When guest has been met
 1. Confirm with driver: "Guest met?"
 2. Update the airport pickup status to completed
-3. Notify Elena: "{guest name} has been picked up and is on their way to Middleton Manor."
+3. Notify Elena: "{guest name} has been picked up and is on their way to {property}."
 
 ## Vehicle Fleet Management
 
