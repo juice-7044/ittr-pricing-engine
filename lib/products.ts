@@ -25,6 +25,7 @@ export interface TaxRule { id: string; label: string; percent: number; appliesTo
 
 const products: Product[] = [
   { id: 'middleton-manor', category: 'accommodation', name: 'Middleton Manor', description: "8 guests · 3BR townhouse · 3 beds · 3.5 baths · Luxury smart home in Houston's Museum District. Tesla EV charger, private garage, dedicated workspace.", rateMinor: 29900, unit: 'nightly', requiresDeposit: true, depositPercent: 25, smokingViolationMinor: 50000, maxGuests: 8, allowBundles: true },
+  { id: 'middleton-manor-retreat', category: 'accommodation', name: 'Middleton Manor Retreat', description: "2507 N MacGregor Way, Houston, TX 77004 · Luxury retreat in Houston's Museum District.", rateMinor: 25000, unit: 'nightly', requiresDeposit: true, depositPercent: 25, smokingViolationMinor: 50000, allowBundles: true },
 
   { id: 'car-noir-1', category: 'car', name: 'Noir 1 · 2027 Kia Telluride Hybrid', description: 'Luxury 3-row SUV hybrid.', rateMinor: 12000, unit: 'daily', requiresDeposit: true, depositPercent: 100, securityDepositMinor: 50000, rimDamageMinor: 50000, smokingViolationMinor: 50000 },
   { id: 'car-luna-2', category: 'car', name: 'Luna 2 · 2026 Tesla White Premium', description: 'Premium white Tesla.', rateMinor: 8900, unit: 'daily', requiresDeposit: true, depositPercent: 100, securityDepositMinor: 50000, rimDamageMinor: 50000, smokingViolationMinor: 50000 },
@@ -67,6 +68,18 @@ const rentalDiscounts: RentalDiscount[] = [
   { minDays: 30, maxDays: 365, discountPercent: 18, label: 'Monthly Rental -18%' },
 ]
 
+// ── Property discounts (accommodations — all properties) ──
+// Weekly Stay Discount: 20% off stays of 7+ nights.
+const propertyDiscounts: { minNights: number; discountPercent: number; label: string }[] = [
+  { minNights: 7, discountPercent: 20, label: 'Weekly Stay Discount -20%' },
+]
+
+// Repeat Guest Discount (all properties): additional 15%, stacked on other property discounts.
+const repeatGuestDiscountPercent = 15
+
+// Cleaning Fee (all properties): flat per-booking fee when an accommodation is booked.
+const cleaningFeeMinor = 25000   // $250
+
 const bundleDiscount: BundleDiscount = { categories: ['accommodation', 'car'], discountPercent: 15, label: 'Bundle Discount -15% (accommodation + vehicle)' }
 
 const taxRules: TaxRule[] = [
@@ -76,4 +89,4 @@ const taxRules: TaxRule[] = [
 
 const promoCodes: Record<string, { type: string; value: number; minTotalMinor?: number }> = {}
 
-export { products, seasonalRules, rentalDiscounts, bundleDiscount, taxRules, promoCodes }
+export { products, seasonalRules, rentalDiscounts, bundleDiscount, taxRules, promoCodes, propertyDiscounts, repeatGuestDiscountPercent, cleaningFeeMinor }

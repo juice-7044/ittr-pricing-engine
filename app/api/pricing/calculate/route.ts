@@ -49,6 +49,7 @@ export async function POST(request: NextRequest) {
       items: normalizedItems,
       checkIn: body.checkIn,
       promoCode: body.promoCode,
+      isRepeatGuest: body.isRepeatGuest === true || body.isRepeatGuest === 'true',
     })
 
     if (!result.ok) {

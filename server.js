@@ -65,6 +65,7 @@ const server = http.createServer((req, res) => {
         items: normalizedItems,
         checkIn: input.checkIn,
         promoCode: input.promoCode,
+        isRepeatGuest: input.isRepeatGuest === true || input.isRepeatGuest === 'true',
       })
 
       res.writeHead(result.ok ? 200 : 400, { 'Content-Type': 'application/json' })

@@ -1,11 +1,11 @@
-import { products, seasonalRules, rentalDiscounts, bundleDiscount, taxRules, promoCodes } from './products'
+import { products, seasonalRules, rentalDiscounts, bundleDiscount, taxRules, promoCodes, propertyDiscounts, repeatGuestDiscountPercent, cleaningFeeMinor } from './products'
 import type { Product } from './products'
 
 export interface PricingLineItem {
   type: string; productId: string; quantity: number; customRateMinor?: number
 }
 export interface PricingRequest {
-  items: PricingLineItem[]; checkIn?: string; promoCode?: string | null
+  items: PricingLineItem[]; checkIn?: string; promoCode?: string | null; isRepeatGuest?: boolean
 }
 export interface PricingBreakdownItem {
   label: string; amountMinor: number; detail: string; category: string
@@ -77,19 +77,22 @@ export function calculatePricing(req: PricingRequest): PricingResponse {
 
   // Calculate line items
   let subtotalMinor = 0
+  const lineTotals: { category: string; amount: number }[] = []
   for (const item of req.items) {
     const product = products.find(p => p.id === item.productId)
     if (!product) return { ok: false, currency: 'usd', breakdown: [], subtotalMinor: 0, taxesFeesMinor: 0, totalMinor: 0, depositRequiredMinor: 0, error: `Unknown product: ${item.productId}` }
 
     const rate = item.customRateMinor ?? getEffectiveRate(product, checkInDate)
     const lineTotal = rate * item.quantity
-    subtotalMinor += lineTotal
 
     let discountAmount = 0
     let discountLabel = ''
     if (product.category === 'car') {
       const disc = rentalDiscounts.find(d => item.quantity >= d.minDays && item.quantity <= d.maxDays)
       if (disc) { discountAmount = Math.round(lineTotal * (disc.discountPercent / 100)); discountLabel = disc.label }
+    } else if (product.category === 'accommodation') {
+      const pdisc = propertyDiscounts.find(d => item.quantity >= d.minNights)
+      if (pdisc) { discountAmount = Math.round(lineTotal * (pdisc.discountPercent / 100)); discountLabel = pdisc.label }
     }
 
     const rule = seasonalRules.length > 0 && !item.customRateMinor ? getSeasonalRate(product.id, checkInDate) : null
@@ -98,8 +101,11 @@ export function calculatePricing(req: PricingRequest): PricingResponse {
       `× ${item.quantity}`,
     ]
     if (rule) parts.push(`(${rule.label})`)
+    if (discountLabel) parts.push(`(${discountLabel})`)
 
     const afterDiscount = lineTotal - discountAmount
+    subtotalMinor += afterDiscount
+    lineTotals.push({ category: product.category, amount: afterDiscount })
     breakdown.push({ label: product.name, amountMinor: afterDiscount, detail: parts.join(' '), category: product.category })
   }
 
@@ -123,6 +129,24 @@ export function calculatePricing(req: PricingRequest): PricingResponse {
 
   let subtotalAfter = subtotalMinor - bundleAmount
 
+  // Repeat Guest Discount (additional 15% off properties)
+  let repeatGuestDiscount = 0
+  if (req.isRepeatGuest) {
+    const accommodationTotal = lineTotals.filter(l => l.category === 'accommodation').reduce((s, l) => s + l.amount, 0)
+    if (accommodationTotal > 0) {
+      repeatGuestDiscount = Math.round(accommodationTotal * (repeatGuestDiscountPercent / 100))
+      breakdown.push({ label: `Repeat Guest Discount -${repeatGuestDiscountPercent}%`, amountMinor: -repeatGuestDiscount, detail: `-$${(repeatGuestDiscount / CENTS).toFixed(2)} (${repeatGuestDiscountPercent}% off properties)`, category: 'accommodation' })
+    }
+  }
+  subtotalAfter -= repeatGuestDiscount
+
+  // Cleaning Fee (flat, per booking, all properties)
+  let cleaningFeeApplied = 0
+  if (hasAccommodation) {
+    cleaningFeeApplied = cleaningFeeMinor
+    breakdown.push({ label: 'Cleaning Fee', amountMinor: cleaningFeeApplied, detail: `$${(cleaningFeeApplied / CENTS).toFixed(2)} per stay`, category: 'accommodation' })
+  }
+
   // Promo code
   let promoDiscount = 0
   if (req.promoCode) {
@@ -133,6 +157,7 @@ export function calculatePricing(req: PricingRequest): PricingResponse {
     }
   }
   subtotalAfter -= promoDiscount
+  subtotalAfter += cleaningFeeApplied
 
   // Taxes
   let taxesFeesMinor = 0

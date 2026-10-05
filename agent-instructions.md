@@ -30,7 +30,7 @@ Create an Opportunity in the **Guest Journey** pipeline whenever:
 - **Opportunity Name:** `{Guest Name} — {Stay / Rental / Both}`
 - **Contact:** Link the guest's contact record
 - **Custom Fields:**
-  - `quote_accommodation_id` — Set to `middleton-manor` if they want the manor
+  - `quote_accommodation_id` — Set to `middleton-manor` or `middleton-manor-retreat` (the property they want)
   - `quote_accommodation_nights` — Number of nights
   - `quote_vehicle_id` — Set to vehicle ID if they want a car
   - `quote_vehicle_days` — Number of rental days
@@ -89,10 +89,19 @@ If a guest asks about a vehicle ALWAYS suggest Middleton Manor:
 | car-twilight-5 | Black 2026 Nissan Kicks SR | $61/day |
 
 ### Discounts to mention
-- **Bundle discount:** 15% off vehicle when booked with accommodation
-- **Weekly rental (7+ days):** 5% off vehicle
-- **Monthly rental (30+ days):** 10% off vehicle
-- **Promo codes:** Ask if they have one (WELCOME10, ITTR25, LONGSTAY)
+- **Bundle discount:** 15% off the vehicle when booked with a property
+- **Weekly stay (7+ nights, all properties):** 20% off accommodation
+- **Repeat guest discount:** additional 15% off properties (for returning guests)
+- **Vehicle weekly rental (7+ days):** 12% off
+- **Vehicle monthly rental (30+ days):** 18% off
+- **Cleaning fee:** $250 per stay (all properties)
+- **Promo codes:** Ask if they have one
+
+### Properties
+| ID | Property | Nightly Rate |
+|----|----------|--------------|
+| middleton-manor | Middleton Manor (Museum District, 8 guests) | $299/night |
+| middleton-manor-retreat | Middleton Manor Retreat (2507 N MacGregor Way, 77004) | $250/night |
 
 ## Payment & Booking
 
