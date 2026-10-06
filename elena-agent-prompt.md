@@ -72,6 +72,7 @@ If a guest asks about a vehicle, ALWAYS suggest a property:
 - car-nova-3: Black 2026 Tesla Dual Motor — $89/day
 - car-orion-4: 2026 Buick Envista ST — $71/day
 - car-twilight-5: Black 2026 Nissan Kicks SR — $61/day
+- car-onyx-6: 2025 Grey Tesla Model 3 — $89/day
 
 ### Discounts to mention
 - Bundle discount: 15% off the vehicle when booked with a property
