@@ -70,22 +70,23 @@ const rentalDiscounts: RentalDiscount[] = [
 ]
 
 // ── Property discounts (accommodations — all properties) ──
-// Weekly Stay Discount: 20% off stays of 7+ nights.
+// Weekly Stay Discount: 15% off stays of 7+ nights.
 const propertyDiscounts: { minNights: number; discountPercent: number; label: string }[] = [
-  { minNights: 7, discountPercent: 20, label: 'Weekly Stay Discount -20%' },
+  { minNights: 7, discountPercent: 15, label: 'Weekly Stay Discount -15%' },
 ]
 
-// Repeat Guest Discount (all properties): additional 15%, stacked on other property discounts.
-const repeatGuestDiscountPercent = 15
+// Repeat Guest Discount (all properties): additional 5%, stacked on other property discounts.
+const repeatGuestDiscountPercent = 5
 
 // Cleaning Fee (all properties): flat per-booking fee when an accommodation is booked.
 const cleaningFeeMinor = 25000   // $250
 
-const bundleDiscount: BundleDiscount = { categories: ['accommodation', 'car'], discountPercent: 15, label: 'Bundle Discount -15% (accommodation + vehicle)' }
+const bundleDiscount: BundleDiscount = { categories: ['accommodation', 'car'], discountPercent: 10, label: 'Bundle Discount -10% (accommodation + vehicle)' }
 
 const taxRules: TaxRule[] = [
   { id: 'occupancy-tax', label: 'Occupancy Tax', percent: 10, appliesTo: ['accommodation'] },
   { id: 'service-fee', label: 'Service & Booking Fee', percent: 5, appliesTo: ['accommodation', 'car', 'upsell', 'concierge'] },
+  { id: 'processing-fee', label: 'Credit/Debit Processing Fee', percent: 3, appliesTo: ['accommodation', 'car', 'upsell', 'concierge'] },
 ]
 
 const promoCodes: Record<string, { type: string; value: number; minTotalMinor?: number }> = {}

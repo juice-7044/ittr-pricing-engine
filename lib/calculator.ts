@@ -124,7 +124,7 @@ export function calculatePricing(req: PricingRequest): PricingResponse {
         bundleAmount += Math.round(afterLength * (bundleDiscount.discountPercent / 100))
       }
     }
-    if (bundleAmount > 0) breakdown.push({ label: bundleDiscount.label, amountMinor: -bundleAmount, detail: `-$${(bundleAmount / CENTS).toFixed(2)} (15% off vehicle)`, category: 'upsell' })
+    if (bundleAmount > 0) breakdown.push({ label: bundleDiscount.label, amountMinor: -bundleAmount, detail: `-$${(bundleAmount / CENTS).toFixed(2)} (${bundleDiscount.discountPercent}% off vehicle)`, category: 'upsell' })
   }
 
   let subtotalAfter = subtotalMinor - bundleAmount
