@@ -105,6 +105,11 @@ If a guest asks about a vehicle ALWAYS suggest a property:
 | middleton-manor | Middleton Manor (Museum District, 8 guests) | $299/night |
 | middleton-manor-retreat | Middleton Manor Retreat (2507 N MacGregor Way, 77004) | $250/night |
 
+### Seasonal rates (both properties)
+- **Peak +10%:** Mar 1–May 31, Sep 15–Nov 30, Dec 15–Jan 5
+- **Holiday +25%:** Christmas/New Year (Dec 23–Jan 5), July 4th, Memorial Day, Thanksgiving, Labor Day
+- **Off-peak flat:** Middleton Manor **$195/night**, Middleton Manor Retreat **$197/night** (Jun 1–Sep 14)
+
 ## Payment & Booking
 
 ### When guest says "I want to book"
