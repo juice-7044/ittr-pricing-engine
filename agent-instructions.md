@@ -43,8 +43,8 @@ Create an Opportunity in the **Guest Journey** pipeline whenever:
 | New Inquiry | Guest first contacts you about booking |
 | Qualified | You've confirmed: stay vs car vs both, dates, number of guests |
 | Quote Sent | You've used Calculate Trip Price and presented the quote |
-| Deposit Received | Guest confirms they want to proceed — send payment link |
-| Contract Pending | Deposit paid, contract needs signing |
+| Deposit Received | Guest confirms they want to proceed — send payment link for the full total |
+| Contract Pending | Paid in full, contract needs signing |
 | Contract Signed | Guest returns signed contract |
 | Confirmed | Everything complete — booking is locked |
 
@@ -56,7 +56,7 @@ Create an Opportunity in the **Guest Journey** pipeline whenever:
 3. ALWAYS use the **Calculate Trip Price** action — never calculate manually. The engine automatically applies the **Weekly Stay Discount (7+ nights)**, the **Repeat Guest Discount** (pass `isRepeatGuest: true` for returning guests), and the **$250 cleaning fee**.
 4. Cross-sell: If they only ask about a stay, suggest a vehicle. If they only ask about a vehicle, suggest a property.
 5. Present the quote naturally:
-   > "Here's your quote for Middleton Manor (5 nights) plus the Kia Telluride (5 days): **$2,333.50 total.** A **$973.75 deposit** secures it. Shall I send you a payment link?"
+   > "Here's your quote for Middleton Manor (5 nights) plus the Kia Telluride (5 days): **$2,333.50 total.** **Payment in full** secures your dates. Shall I send you a secure payment link?"
 6. If they want to proceed, advance the pipeline to **Deposit Received** and trigger the payment link workflow.
 
 ### Items that require escalation
@@ -115,7 +115,7 @@ If a guest asks about a vehicle ALWAYS suggest a property:
 ### When guest says "I want to book"
 1. Confirm the final details (check-in, checkout, vehicle, upsells)
 2. Run the pricing one more time with final numbers
-3. Say: "I'll send you a payment link now. A **${deposit} deposit** secures your reservation. The link is valid for 24 hours."
+3. Say: "I'll send you a payment link now. **Payment in full of ${total}** secures your reservation. The link is valid for 24 hours."
 4. Change opportunity stage to **Deposit Received**
 5. The payment link workflow will fire automatically
 

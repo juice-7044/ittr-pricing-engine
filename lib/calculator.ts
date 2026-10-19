@@ -168,15 +168,8 @@ export function calculatePricing(req: PricingRequest): PricingResponse {
     if (base > 0) { const amt = Math.round(base * (taxRule.percent / 100)); taxesFeesMinor += amt; breakdown.push({ label: taxRule.label, amountMinor: amt, detail: `${taxRule.percent}% of ${cats.join(', ')}`, category: 'accommodation' }) }
   }
 
-  // Deposits
-  let depositRequiredMinor = 0
-  for (const item of req.items) {
-    const product = products.find(p => p.id === item.productId)
-    if (product?.requiresDeposit && product.depositPercent > 0) {
-      const rate = item.customRateMinor ?? getEffectiveRate(product, checkInDate)
-      depositRequiredMinor += Math.round((rate * item.quantity) * (product.depositPercent / 100))
-    }
-  }
+  // Payment policy: pay in full to confirm (JMG-137). Amount due to book = full total.
+  const depositRequiredMinor = subtotalAfter + taxesFeesMinor
 
   const securityDepositMinor = req.items.reduce((s, i) => s + (products.find(p => p.id === i.productId)?.securityDepositMinor ?? 0), 0)
   const smokingViolationMinor = req.items.reduce((s, i) => s + (products.find(p => p.id === i.productId)?.smokingViolationMinor ?? 0), 0)

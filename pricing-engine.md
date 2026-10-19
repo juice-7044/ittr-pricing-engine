@@ -127,7 +127,7 @@ total_price_minor        → Number   (grand total in cents)
 base_amount_minor        → Number   (subtotal before taxes/fees)
 taxes_fees_minor         → Number   (taxes & fees total)
 booking_status           → Text     (quote_sent | partially_paid | paid_in_full)
-deposit_required_minor   → Number   (deposit needed to confirm)
+deposit_required_minor   → Number   (amount due to confirm = full total; pay-in-full policy)
 ```
 
 ### AI Studio Agent Flow
@@ -137,7 +137,7 @@ deposit_required_minor   → Number   (deposit needed to confirm)
 3. Agent calls Custom Action → webhook to pricing API
 4. Agent receives breakdown and responds:
    "Here's your quote: Villa 2BR for 5 nights + SUV for 5 days = $2,850.50 total"
-5. Agent offers: "Want to book? A 25% deposit of $712.63 secures it."
+5. Agent offers: "Want to book? Payment in full secures it." (pay-in-full policy, JMG-137)
 6. If traveler agrees → GHL updates opportunity stage → payment workflow triggers
 ```
 
