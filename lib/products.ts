@@ -98,9 +98,7 @@ const cleaningFeeMinor = 25000   // $250
 const bundleDiscount: BundleDiscount = { categories: ['accommodation', 'car'], discountPercent: 10, label: 'Bundle Discount -10% (accommodation + vehicle)' }
 
 const taxRules: TaxRule[] = [
-  { id: 'occupancy-tax', label: 'Occupancy Tax', percent: 10, appliesTo: ['accommodation'] },
   { id: 'service-fee', label: 'Service & Booking Fee', percent: 5, appliesTo: ['accommodation', 'car', 'upsell', 'concierge'] },
-  { id: 'processing-fee', label: 'Credit/Debit Processing Fee', percent: 3, appliesTo: ['accommodation', 'car', 'upsell', 'concierge'] },
 ]
 
 const promoCodes: Record<string, { type: string; value: number; minTotalMinor?: number }> = {}

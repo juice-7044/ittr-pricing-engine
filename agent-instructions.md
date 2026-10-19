@@ -95,7 +95,7 @@ If a guest asks about a vehicle ALWAYS suggest a property:
 - **Repeat guest discount:** additional 5% off properties (for returning guests)
 - **Vehicle weekly rental (7+ days):** 12% off
 - **Vehicle monthly rental (30+ days):** 18% off
-- **Credit/Debit processing fee:** 3% (added to every booking)
+- **Service & Booking Fee:** 5% (added to every booking; no card processing fee, no taxes charged)
 - **Cleaning fee:** $250 per stay (all properties)
 - **Promo codes:** Ask if they have one
 
